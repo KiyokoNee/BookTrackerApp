@@ -15,6 +15,10 @@
 </head>
 <body>
 	<h1>Test</h1>
-	<p>Test was successful!</p>
+	<form method="POST" action="/api/search">
+		<input name="bookQuery" />
+		<button type="submit">Search</button>
+	</form>
+	<p><c:out value="${bookQuery}"></c:out></p>
 </body>
 </html>
