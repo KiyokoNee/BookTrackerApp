@@ -19,6 +19,10 @@ public class APIService {
 		return initial.trim().replaceAll("\\s+", "+");
 	}
 	
+	public String cleanKey(String key) {
+		return key.replaceAll("/works/", "");
+	}
+	
 	public List<SearchBookDocDTO> findByQuery(String query) {
 		String uri = "https://openlibrary.org/search.json?q=" + convertQuery(query);
 		return findByUri(uri);
