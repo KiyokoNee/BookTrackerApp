@@ -22,7 +22,7 @@ public class APIService {
 	}
 	
 	public String cleanKey(String key) {
-		return key.replaceAll("/works/", "");
+		return key.trim().replaceAll("/works/", "");
 	}
 	
 	public BookDetailsDTO findByKey(String key) {
@@ -31,6 +31,11 @@ public class APIService {
 		ResponseEntity<BookDetailsDTO> response = restTemplate.getForEntity(uri, BookDetailsDTO.class);
 		
 		return response.getBody();
+	}
+	
+	public String getImageURLByKey(String key) {
+		String cleanKey = cleanKey(key);
+		return "https://covers.openlibrary.org/w/olid/" + cleanKey + ".jpg";
 	}
 	
 	public List<SearchBookDocDTO> findByQuery(String query) {
