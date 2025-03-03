@@ -15,8 +15,6 @@ import com.groupone.booktracker.services.APIService;
 @RequestMapping("/api")
 public class APIController {
 	@Autowired
-	private RestTemplate restTemplate;
-	@Autowired
 	private APIService apiServ;
 	
 	@PostMapping("/search")
