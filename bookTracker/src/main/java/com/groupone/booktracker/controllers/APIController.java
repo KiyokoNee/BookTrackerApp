@@ -9,16 +9,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.groupone.booktracker.services.APIService;
+
 @Controller
 @RequestMapping("/api")
 public class APIController {
 	@Autowired
 	private RestTemplate restTemplate;
+	@Autowired
+	private APIService apiServ;
 	
 	@PostMapping("/search")
 	public String search(Model model, @RequestParam("bookQuery") String bookQuery, RedirectAttributes redirectAttributes) {
+		String adjustedQuery = apiServ.convertQuery(bookQuery);
+		String uri = "https://openlibrary.org/search.json?q=" + adjustedQuery;
 		
-		redirectAttributes.addFlashAttribute("bookQuery", bookQuery);
+		redirectAttributes.addFlashAttribute("adjustedQuery", adjustedQuery);
+		redirectAttributes.addFlashAttribute("uriCall", uri);
+		redirectAttributes.addFlashAttribute("books", apiServ.findByQuery(bookQuery));
 		
 		return "redirect:/";
 	}

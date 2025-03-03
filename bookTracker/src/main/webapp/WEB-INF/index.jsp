@@ -19,6 +19,10 @@
 		<input name="bookQuery" />
 		<button type="submit">Search</button>
 	</form>
-	<p><c:out value="${bookQuery}"></c:out></p>
+	<p><c:out value="${adjustedQuery}"></c:out></p>
+	<p><c:out value="${uriCall}"></c:out></p>
+	<c:forEach var="book" items="${books}">
+		<p><c:out value="${book.title}"></c:out></p>
+	</c:forEach>
 </body>
 </html>
