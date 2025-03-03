@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.groupone.booktracker.dtos.BookDetailsDTO;
 import com.groupone.booktracker.dtos.SearchBookDocDTO;
 import com.groupone.booktracker.services.APIService;
 
@@ -29,6 +30,15 @@ public class APIController {
 		redirectAttributes.addFlashAttribute("uriCall", uri);
 		redirectAttributes.addFlashAttribute("books", books);
 		redirectAttributes.addFlashAttribute("cleanKey", apiServ.cleanKey(books.get(0).getKey()));
+		
+		return "redirect:/";
+	}
+	
+	@PostMapping("/")
+	public String test(Model model, @RequestParam("bookKey") String bookKey, RedirectAttributes redirectAttributes) {
+		BookDetailsDTO result = apiServ.findByKey(bookKey);
+		redirectAttributes.addFlashAttribute("book", result);
+		
 		
 		return "redirect:/";
 	}

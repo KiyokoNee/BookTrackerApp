@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.groupone.booktracker.dtos.BookDetailsDTO;
 import com.groupone.booktracker.dtos.SearchBookDocDTO;
 import com.groupone.booktracker.dtos.SearchBookResponseDTO;
 
@@ -14,6 +15,7 @@ import com.groupone.booktracker.dtos.SearchBookResponseDTO;
 public class APIService {
 	@Autowired
 	private RestTemplate restTemplate;
+	private String http = "https://openlibrary.org";
 	
 	public String convertQuery(String initial) {
 		return initial.trim().replaceAll("\\s+", "+");
@@ -23,8 +25,16 @@ public class APIService {
 		return key.replaceAll("/works/", "");
 	}
 	
+	public BookDetailsDTO findByKey(String key) {
+		String cleanKey = cleanKey(key);
+		String uri = http + "/works/" + cleanKey + ".json";
+		ResponseEntity<BookDetailsDTO> response = restTemplate.getForEntity(uri, BookDetailsDTO.class);
+		
+		return response.getBody();
+	}
+	
 	public List<SearchBookDocDTO> findByQuery(String query) {
-		String uri = "https://openlibrary.org/search.json?q=" + convertQuery(query);
+		String uri = http + "/search.json?q=" + convertQuery(query);
 		return findByUri(uri);
 	}
 	
