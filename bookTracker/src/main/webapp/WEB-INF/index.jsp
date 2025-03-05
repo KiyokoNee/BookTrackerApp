@@ -44,6 +44,7 @@
 	</div>
 	</c:forEach>
 	<h2>Book Details Test</h2>
+	<c:if test="${not empty book}">
 	<div class="card">
 		<img src="${imgURL}" />
 		<p>Title: <c:out value="${book.title}"></c:out></p>
@@ -61,5 +62,6 @@
 		</c:forEach>
 		<p>Number of Pages: <c:out value="${book.number_of_pages }"></c:out></p>
 	</div>
+	</c:if>
 </body>
 </html>

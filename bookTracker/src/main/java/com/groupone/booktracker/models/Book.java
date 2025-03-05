@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +29,12 @@ public class Book {
 	private Date createdAt;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updatedAt;
+	
+	private String title;
+	private String subtitle;
+	private String description;
+	private Long totalPages;
+	private String bookKey;
 	
 	private Long pagesRead;
 	private Date returnBy;
@@ -43,6 +51,17 @@ public class Book {
 	
 	public Book() {
 		
+	}
+	
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
+	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
 	}
 
 	public Long getId() {
@@ -75,5 +94,77 @@ public class Book {
 
 	public void setBorrower(User borrower) {
 		this.borrower = borrower;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(Long totalPages) {
+		this.totalPages = totalPages;
+	}
+
+	public String getBookKey() {
+		return bookKey;
+	}
+
+	public void setBookKey(String bookKey) {
+		this.bookKey = bookKey;
+	}
+
+	public Long getPagesRead() {
+		return pagesRead;
+	}
+
+	public void setPagesRead(Long pagesRead) {
+		this.pagesRead = pagesRead;
+	}
+
+	public Date getReturnBy() {
+		return returnBy;
+	}
+
+	public void setReturnBy(Date returnBy) {
+		this.returnBy = returnBy;
+	}
+
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 }
