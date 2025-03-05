@@ -12,6 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<h1>Test</h1>
@@ -31,8 +32,16 @@
 	<p>Clean Key (1st Item): <c:out value="${cleanKey}"></c:out></p>
 	<h3>Search Results</h3>
 	<c:forEach var="book" items="${books}">
-		<p><c:out value="${book.title}"></c:out></p>
-		<p><c:out value="${book.key}"></c:out></p>
+	<div class="card">
+		<p>Work Title: <c:out value="${book.title}"></c:out></p>
+		<p>Work Key: <c:out value="${book.key}"></c:out></p>
+		<p>Book Title: <c:out value="${book.editions.docs.get(0).title}"></c:out></p>
+		<c:if test="${not empty book.editions.docs.get(0).subtitle }">
+		<p>Book Subtitle: <c:out value="${book.editions.docs.get(0).subtitle}"></c:out></p>
+		</c:if>
+		<p>Book Key: <c:out value="${book.editions.docs.get(0).key}"></c:out></p>
+		<p>Book Description: <c:out value="${book.editions.docs.get(0).description}"></c:out></p>
+	</div>
 	</c:forEach>
 	<h2>Book Details Test</h2>
 	<img src="${imgURL}" />

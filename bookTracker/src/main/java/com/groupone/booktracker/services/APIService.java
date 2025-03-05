@@ -44,7 +44,7 @@ public class APIService {
 	
 	// Searches for books by restructuring the query and sending it as a URI to the findByUri method
 	public List<SearchBookDocDTO> findByQuery(String query) {
-		String uri = http + "/search.json?q=" + convertQuery(query);
+		String uri = http + "/search.json?q=" + convertQuery(query) + "&fields=key,title,subtitle,author_name,editions,first_publish_year,description";
 		return findByUri(uri);
 	}
 	
