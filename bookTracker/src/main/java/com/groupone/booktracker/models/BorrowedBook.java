@@ -35,7 +35,8 @@ public class BorrowedBook {
 	private List<String> author;
 	private String description;
 	private List<String> subjects;
-	
+	private String key;
+
 	// Properties obtained from user input
 	@Min(0)
 	private Long pagesRead;
@@ -130,5 +131,13 @@ public class BorrowedBook {
 
 	public void setBorrower(User borrower) {
 		this.borrower = borrower;
+	}
+	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }
