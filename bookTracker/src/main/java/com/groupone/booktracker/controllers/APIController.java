@@ -37,9 +37,11 @@ public class APIController {
 	@PostMapping("/")
 	public String test(Model model, @RequestParam("bookKey") String bookKey, RedirectAttributes redirectAttributes) {
 		BookDetailsDTO result = apiServ.findByKey(bookKey);
+		List<String> authors = apiServ.getAuthorNames(result);
 		String img = apiServ.getImageURLByKey(bookKey);
 		redirectAttributes.addFlashAttribute("book", result);
 		redirectAttributes.addFlashAttribute("imgURL", img);
+		redirectAttributes.addFlashAttribute("authors", authors);
 		
 		
 		return "redirect:/";

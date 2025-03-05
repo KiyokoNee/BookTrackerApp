@@ -37,14 +37,29 @@
 		<p>Work Key: <c:out value="${book.key}"></c:out></p>
 		<p>Book Title: <c:out value="${book.editions.docs.get(0).title}"></c:out></p>
 		<c:if test="${not empty book.editions.docs.get(0).subtitle }">
-		<p>Book Subtitle: <c:out value="${book.editions.docs.get(0).subtitle}"></c:out></p>
+			<p>Book Subtitle: <c:out value="${book.editions.docs.get(0).subtitle}"></c:out></p>
 		</c:if>
 		<p>Book Key: <c:out value="${book.editions.docs.get(0).key}"></c:out></p>
 		<p>Book Description: <c:out value="${book.editions.docs.get(0).description}"></c:out></p>
 	</div>
 	</c:forEach>
 	<h2>Book Details Test</h2>
-	<img src="${imgURL}" />
-	<p><c:out value="${book.title}"></c:out></p>
+	<div class="card">
+		<img src="${imgURL}" />
+		<p>Title: <c:out value="${book.title}"></c:out></p>
+		<c:if test="${not empty book.subtitle }">
+			<p>Subtitle: <c:out value="${book.editions.docs.get(0).subtitle}"></c:out></p>
+		</c:if>
+		<p>Description: <c:out value="${book.description.value}"></c:out></p>
+		<p>Author(s)</p>
+		<c:forEach var = "author" items="${authors}">
+			<p><c:out value="${author}"></c:out></p>
+		</c:forEach>
+		<p>Subject(s)</p>
+		<c:forEach var = "subject" items="${book.subjects}">
+			<p><c:out value="${subject}"></c:out></p>
+		</c:forEach>
+		<p>Number of Pages: <c:out value="${book.number_of_pages }"></c:out></p>
+	</div>
 </body>
 </html>
