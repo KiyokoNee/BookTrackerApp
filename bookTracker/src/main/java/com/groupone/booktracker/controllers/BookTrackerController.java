@@ -8,9 +8,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class BookTrackerController {
 	
-	@GetMapping
+	// Will remove later, using for testing purposes
+	@GetMapping("/test")
 	public String test() {
 		return "index.jsp";
 	}
 
+	@GetMapping
+	public String home() {
+		
+		return "index.jsp";
+	}
+	
+	@GetMapping("/register")
+	public String registerForm() {
+		return "index.jsp";
+	}
+	
+	@GetMapping("/login")
+	public String loginForm() {
+		return "index.jsp";
+	}
 }
