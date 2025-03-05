@@ -41,7 +41,7 @@ public class User {
 	
 	// Entity Relationship properties
 	@OneToMany(mappedBy = "borrower", fetch = FetchType.LAZY)
-	private List<BorrowedBook> borrowedBooks;
+	private List<Book> borrowedBooks;
 	
 	public User() {
 
@@ -103,11 +103,11 @@ public class User {
 		this.confirmPassword = confirmPassword;
 	}
 
-	public List<BorrowedBook> getBorrowedBooks() {
+	public List<Book> getBorrowedBooks() {
 		return borrowedBooks;
 	}
 
-	public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
+	public void setBorrowedBooks(List<Book> borrowedBooks) {
 		this.borrowedBooks = borrowedBooks;
 	}
 } 
