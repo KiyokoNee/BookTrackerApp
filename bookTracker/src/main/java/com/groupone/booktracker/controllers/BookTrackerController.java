@@ -120,11 +120,13 @@ public class BookTrackerController {
 		borrowingBook.setBorrower( borrower );
 		borrowingBook = bookService.borrowBook(borrowingBook);
 		
+		
 		for(String strAuthor:authors) {
 			Author athr = new Author();
 			athr.setName(strAuthor);
 			athr.setBook(borrowingBook);
 			bookAuthors.add(athr);
+			System.out.println(strAuthor + "-------- INSIDE BORROW AUTHOR LOOP");;
 		}
 		borrowingBook.setAuthors(bookAuthors);
 		
@@ -133,6 +135,7 @@ public class BookTrackerController {
 			sbj.setSubject(strSubject);
 			sbj.setBook(borrowingBook);
 			bookSubjects.add(sbj);
+			System.out.println(strSubject + "-------- INSIDE BORROW SUBJECT LOOP");;
 		}
 		borrowingBook.setSubjects(bookSubjects);
 		
@@ -198,12 +201,12 @@ public class BookTrackerController {
 	public String dashboard() {
 		
 		if( checkLogin() ) { return "redirect:/login"; }
-		
 		return "dashboard.jsp";
 	}
 	
 	@GetMapping("/mybooks")
 	public String myBooks() {
+		
 		return "index.jsp";
 	}
 	

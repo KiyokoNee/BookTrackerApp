@@ -40,6 +40,9 @@
 								<p class="text-truncate" >Notes: <c:out value="${book.editions.docs.get(0).subtitle}" /></p>
 							</c:if>
 						    <a href="/book/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}/details" class="btn btn-dark btn-sm">More Details</a>
+				    		<form method="POST" action="/borrow/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}" class="mt-1">
+								<button type="submit" class="btn btn-sm btn-dark">Borrow</button>
+							</form>
 						  </div>
 						</div>
 					</div>
