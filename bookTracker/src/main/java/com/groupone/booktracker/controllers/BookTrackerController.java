@@ -1,6 +1,5 @@
 package com.groupone.booktracker.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupone.booktracker.dtos.BookDetailsDTO;
 import com.groupone.booktracker.dtos.SearchBookDocDTO;
-import com.groupone.booktracker.models.Author;
 import com.groupone.booktracker.models.Book;
 import com.groupone.booktracker.models.LoginUser;
-import com.groupone.booktracker.models.Subject;
 import com.groupone.booktracker.models.User;
 import com.groupone.booktracker.services.APIService;
 import com.groupone.booktracker.services.BookService;
@@ -74,10 +71,15 @@ public class BookTrackerController {
 	
 	@GetMapping("/book/{bookKey}/details")
 	public String bookDetails(
-			@PathVariable("bookKey") String bookKey,
+			@PathVariable String bookKey,
 			Model view
 			) {
-
+		
+		Book potentialBook = bookService.getBookByKey(bookKey);
+		if( potentialBook != null) {
+			view.addAttribute("potentialBook", potentialBook);
+		}
+		
 		BookDetailsDTO result = apiServ.findByKey(bookKey);
 		List<String> authors = apiServ.getAuthorNames(result);
 		String img = apiServ.getImageURLByKey(bookKey);
@@ -86,20 +88,6 @@ public class BookTrackerController {
 		view.addAttribute("authors", authors);
 		
 		return "bookDetails.jsp";
-	}
-	
-	@PostMapping("/borrow/{bookKey}")
-	public String borrow(
-			@PathVariable("bookKey") String bookKey
-			) {
-		
-		if( checkLogin() ) { return "redirect:/login"; }
-		
-		User borrower = userService.findById( (Long) session.getAttribute("loggedInUser") );
-
-		bookService.borrowBookByKey(bookKey, borrower);
-		
-		return "redirect:/mybooks";
 	}
 	
 	@GetMapping("/register")
@@ -111,20 +99,6 @@ public class BookTrackerController {
 		return "registration.jsp";
 	}
 	
-	@PostMapping("/register")
-	public String register(
-			@Valid @ModelAttribute("newUser") User newUser,
-			BindingResult result
-			) {
-		User newRegisteredUser = userService.register(newUser, result);
-		if(  newRegisteredUser == null || result.hasErrors() ) {
-			return "registration.jsp";
-		}
-		session.setAttribute("loggedInUser", newRegisteredUser.getId() );
-		
-		return "redirect:/dashboard";
-	}
-	
 	@GetMapping("/login")
 	public String loginForm(
 			@ModelAttribute("loginUser") LoginUser loginUser
@@ -133,27 +107,6 @@ public class BookTrackerController {
 		
 		return "login.jsp";
 	}
-	
-	@PostMapping("/login")
-	public String login(
-			@Valid @ModelAttribute("loginUser") LoginUser loginUser,
-			BindingResult result
-			) {
-		User maybeUser = userService.login(loginUser, result);
-		if( result.hasErrors() ) {
-			return "login.jsp";
-		}
-		session.setAttribute("loggedInUser", maybeUser.getId() );
-		
-		return "redirect:/dashboard";
-	}
-	
-	@PostMapping("/logout")
-	public String logout() {
-		
-		session.setAttribute("loggedInUser", null);
-		return "redirect:/"; 
-	}	
 	
 	@GetMapping("/dashboard")
 	public String dashboard() {
@@ -172,31 +125,132 @@ public class BookTrackerController {
 		return "mybooks.jsp";
 	}
 	
-	
 	@GetMapping("/book/{bookKey}/edit")
 	public String editBookForm(
-			@PathVariable("bookKey") String bookKey
+			@PathVariable String bookKey,
+			Model view
 			) {
 		
+		if( checkLogin() ) { return "redirect:/login"; }
 		
-		return "index.jsp";
+		Book oldBook = bookService.getBookByKey(bookKey);
+		if( oldBook.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
+			return "redirect:/dashboard";
+		}
+		String img = apiServ.getImageURLByKey(bookKey);
+		
+		view.addAttribute("oldBook", oldBook);
+		view.addAttribute("imgURL", img);
+		view.addAttribute("authors", oldBook.getAuthors());
+		
+		return "editBook.jsp";
 	}
 	
-	// Post Requests - In Progress
 	
+//	POST REQUESTS
 	
-	
-	// Put Requests - In Progress
-	@PutMapping("/book/edit")
-	public String editBorrow() {
-		return "redirect:/";
+	@PostMapping("/register")
+	public String register(
+			@Valid @ModelAttribute("newUser") User newUser,
+			BindingResult result
+			) {
+		User newRegisteredUser = userService.register(newUser, result);
+		if(  newRegisteredUser == null || result.hasErrors() ) {
+			return "registration.jsp";
+		}
+		session.setAttribute("loggedInUser", newRegisteredUser.getId() );
+		
+		return "redirect:/dashboard";
 	}
 	
-	// Delete Requests - In Progress
-	@DeleteMapping("/book/{key}/delete")
-	public String deleteBorrow() {
-		return "redirect:/";
+	@PostMapping("/login")
+	public String login(
+			@Valid @ModelAttribute("loginUser") LoginUser loginUser,
+			BindingResult result
+			) {
+		User maybeUser = userService.login(loginUser, result);
+		if( result.hasErrors() ) {
+			return "login.jsp";
+		}
+		session.setAttribute("loggedInUser", maybeUser.getId() );
+		
+		return "redirect:/dashboard";
 	}
+	
+	@PostMapping("/borrow/{bookKey}")
+	public String borrow(
+			@PathVariable String bookKey
+			) {
+		
+		if( checkLogin() ) { return "redirect:/login"; }
+		
+		User borrower = userService.findById( (Long) session.getAttribute("loggedInUser") );
+
+		bookService.borrowBookByKey(bookKey, borrower);
+		
+		return "redirect:/mybooks";
+	}
+
+	
+	@PostMapping("/logout")
+	public String logout() {
+		
+		session.setAttribute("loggedInUser", null);
+		return "redirect:/"; 
+	}	
+	
+	
+//	PUT REQUESTS
+	
+	@PutMapping("/book/{bookKey}/edit")
+	public String editBorrow(
+			@PathVariable String bookKey,
+			@Valid @ModelAttribute("oldBook") Book oldBook,
+			BindingResult result,
+			Model view 
+			) {
+		
+		if( checkLogin() ) { return "redirect:/login"; }
+		
+		Book newBook = bookService.getBookByKey(bookKey);
+		if( newBook.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
+			return "redirect:/dashboard";
+		}
+		
+		if(result.hasErrors()) {
+			view.addAttribute("oldBook", oldBook);
+			return "editBook.jsp";
+		}
+		
+		newBook.setPagesRead(oldBook.getPagesRead());
+		newBook.setReturnBy(oldBook.getReturnBy());
+		
+		bookService.updateBorrow(newBook);
+		
+		
+		return "redirect:/mybooks";
+	}
+	
+
+//	DELETE REQUESTS
+	
+	@DeleteMapping("/book/{bookKey}/delete")
+	public String deleteBorrow(
+			@PathVariable String bookKey
+			) {
+		
+		if( checkLogin() ) { return "redirect:/login"; }
+		
+		Book bookToDelete = bookService.getBookByKey(bookKey);
+		if( bookToDelete.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
+			return "redirect:/dashboard";
+		}
+		
+		bookService.deleteBorrowById(bookToDelete.getId());
+		System.out.println("DELETE FUNCTION SUCESSFUL");
+		return "redirect:/mybooks";
+	}
+	
 	
 	private Boolean checkLogin() {
 		Long userId = (Long) session.getAttribute("loggedInUser");

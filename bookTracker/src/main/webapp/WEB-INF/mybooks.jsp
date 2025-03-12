@@ -61,8 +61,8 @@
 							    	<p class="fw-bold" >Pages Read: <c:out value="${book.pagesRead}" /></p>
 						    	</div>
 							    <div class="d-flex justify-content-between ">
-							    	<a class="btn btn-sm btn-dark w-25 " href="/book/${book.bookKey.trim().replaceAll('/books/', '')}/edit" >Edit</a>
-									<form:form class="w-25 " action="/book/${book.bookKey.trim().replaceAll('/books/', '')}/delete" method="post">
+							    	<a class="btn btn-sm btn-dark w-25 " href="/book/${book.bookKey}/edit" >Edit</a>
+									<form:form class="w-25 " action="/book/${book.bookKey}/delete" method="post">
 										<input type="hidden" name="_method" value="delete" >
 										<button type="submit" class="btn btn-danger btn-sm w-100" >Return</button>
 									</form:form>
