@@ -7,7 +7,11 @@ public class SearchBookResponseDTO {
 
     public SearchBookResponseDTO() {}
 
-    public List<SearchBookDocDTO> getDocs() {
+    public SearchBookResponseDTO(List<SearchBookDocDTO> docs) {
+		this.docs = docs;
+	}
+
+	public List<SearchBookDocDTO> getDocs() {
         return docs;
     }
 
