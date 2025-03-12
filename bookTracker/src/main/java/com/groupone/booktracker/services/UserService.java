@@ -25,7 +25,7 @@ public class UserService {
 			result.rejectValue("username", "error.username", "This username is already in use!");
 		}
 		if(!newUser.getPassword().equals(newUser.getConfirmPassword())) {
-			result.rejectValue("confirm", "Matches", "The Confirm Password must match Password!");
+			result.rejectValue("confirmPassword", "Matches", "The Confirm Password must match Password!");
 		}
 		
 		// Exit the method due to invalid submission data
@@ -64,5 +64,6 @@ public class UserService {
 		
 		return optionalUser.isPresent() ? optionalUser.get() : null;
 	}
-
+	
+	
 }

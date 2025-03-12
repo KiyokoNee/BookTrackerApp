@@ -1,5 +1,7 @@
 package com.groupone.booktracker.models;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -32,12 +34,15 @@ public class Book {
 	
 	private String title;
 	private String subtitle;
+	
+	@Column(columnDefinition = "TEXT")
 	private String description;
+	
 	private Long totalPages;
 	private String bookKey;
 	
 	private Long pagesRead;
-	private Date returnBy;
+	private LocalDate returnBy;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="borrower_id")
@@ -57,6 +62,8 @@ public class Book {
 	protected void onCreate() {
 		this.createdAt = new Date();
 		this.updatedAt = new Date();
+		this.pagesRead = (long) 0;
+		this.returnBy = LocalDate.now().plus(2, ChronoUnit.WEEKS);
 	}
 	
 	@PreUpdate
@@ -144,11 +151,11 @@ public class Book {
 		this.pagesRead = pagesRead;
 	}
 
-	public Date getReturnBy() {
+	public LocalDate getReturnBy() {
 		return returnBy;
 	}
 
-	public void setReturnBy(Date returnBy) {
+	public void setReturnBy(LocalDate returnBy) {
 		this.returnBy = returnBy;
 	}
 
