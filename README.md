@@ -1,4 +1,4 @@
-# BookTrackerApp
+# Book Tracker Application
 
 ## Description
 
