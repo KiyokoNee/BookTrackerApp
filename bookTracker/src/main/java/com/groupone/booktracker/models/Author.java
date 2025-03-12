@@ -41,6 +41,11 @@ public class Author {
 		
 	}
 	
+	public Author(String name, Book book) {
+		this.name = name;
+		this.book = book;
+	}
+	
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();

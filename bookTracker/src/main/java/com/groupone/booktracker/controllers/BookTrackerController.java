@@ -47,12 +47,6 @@ public class BookTrackerController {
 	
 	@Autowired
 	private HttpSession session;
-	
-	// Will remove later, using for testing purposes
-	@GetMapping("/test")
-	public String test() {
-		return "index.jsp";
-	}
 
 	// TESTING COMMENTS
 	// Get requests - In Progress
@@ -104,40 +98,7 @@ public class BookTrackerController {
 		if( checkLogin() ) { return "redirect:/login"; }
 		
 		User borrower = userService.findById( (Long) session.getAttribute("loggedInUser") );
-		Book borrowingBook = new Book();
-		BookDetailsDTO result = apiServ.findByKey(bookKey);
-		List<Author> bookAuthors = new ArrayList<Author>();
-		List<String> authors = apiServ.getAuthorNames(result);
-		List<Subject> bookSubjects = new ArrayList<Subject>();
-		List<String> subjects = result.getSubjects();
-		
-		borrowingBook.setTitle(result.getTitle());
-		borrowingBook.setSubtitle(result.getSubtitle());
-		borrowingBook.setDescription(result.getDescription().getValue());
-		borrowingBook.setTotalPages(result.getNumber_of_pages());
-		borrowingBook.setBookKey(bookKey);
-		borrowingBook.setAuthors(null);
-		borrowingBook.setSubjects(null);
-		borrowingBook.setBorrower( borrower );
-		borrowingBook = bookService.borrowBook(borrowingBook);
-		
-		for(String strAuthor:authors) {
-			Author athr = new Author();
-			athr.setName(strAuthor);
-			athr.setBook(borrowingBook);
-			bookAuthors.add(athr);
-		}
-		borrowingBook.setAuthors(bookAuthors);
-		
-		for(String strSubject:subjects) {
-			Subject sbj = new Subject();
-			sbj.setSubject(strSubject);
-			sbj.setBook(borrowingBook);
-			bookSubjects.add(sbj);
-		}
-		borrowingBook.setSubjects(bookSubjects);
-		
-		bookService.updateBorrow(borrowingBook);
+		bookService.borrowBookByKey(bookKey, borrower);
 		
 		return "redirect:/mybooks";
 	}
