@@ -54,7 +54,6 @@ public class BookTrackerController {
 		return "index.jsp";
 	}
 
-	// TESTING COMMENTS
 	// Get requests - In Progress
 	
 	@GetMapping()
