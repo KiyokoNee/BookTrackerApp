@@ -47,10 +47,12 @@ public class APIService {
 	
 	public List<String> getAuthorNames(BookDetailsDTO book) {
 		List<String> authors = new ArrayList<>();
-		for(BookDetailsAuthorsDTO author: book.getAuthors()) {
-			ResponseEntity<FindAuthorDTO> response = restTemplate.getForEntity("https://openlibrary.org/" + author.getKey() + ".json", FindAuthorDTO.class);
-			FindAuthorDTO currAuthor = response.getBody();
-			authors.add(currAuthor.getName());
+		if(book.getAuthors() != null){
+			for(BookDetailsAuthorsDTO author: book.getAuthors()) {
+				ResponseEntity<FindAuthorDTO> response = restTemplate.getForEntity("https://openlibrary.org/" + author.getKey() + ".json", FindAuthorDTO.class);
+				FindAuthorDTO currAuthor = response.getBody();
+				authors.add(currAuthor.getName());
+			}
 		}
 		
 		return authors;
