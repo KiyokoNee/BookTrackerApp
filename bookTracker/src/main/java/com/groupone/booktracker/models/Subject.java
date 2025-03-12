@@ -41,6 +41,11 @@ public class Subject {
 		
 	}
 	
+	public Subject(String subject, Book book) {
+		this.subject = subject;
+		this.book = book;
+	}
+	
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();

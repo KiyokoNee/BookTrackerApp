@@ -20,6 +20,10 @@ public class APIService {
 	private RestTemplate restTemplate;
 	private String http = "https://openlibrary.org";
 	
+	public APIService() {
+		this.restTemplate = new RestTemplate();
+	}
+	
 	// Turns the user input into a query that can be added to the URI
 	public String convertQuery(String initial) {
 		return initial.trim().replaceAll("\\s+", "+");
