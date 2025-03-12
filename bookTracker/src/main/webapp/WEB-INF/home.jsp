@@ -32,8 +32,8 @@
 		<div class="border border-1 border-secondary bg-secondary bg-gradient bg-opacity-25 shadow">
 			<div class="row row-cols-1 row cols-sm-2 g-3 p-5">
 				<c:forEach var="book" items="${books}">
-					<div class="col w-25 h-100">
-						<div class="card">
+					<div class="col w-25 ">
+						<div class="card h-100">
 						  <div class="card-body">
 						    <h5 class="card-title"><c:out value="${book.editions.docs.get(0).title}" /></h5>
 						    <h6 class="card-subtitle mb-2 text-muted"><c:out value="${book.title}" /></h6>
@@ -41,6 +41,8 @@
 		  					<c:if test="${not empty book.editions.docs.get(0).subtitle }">
 								<p class="text-truncate" >Notes: <c:out value="${book.editions.docs.get(0).subtitle}" /></p>
 							</c:if>
+						  </div>
+						  <div class="card-footer">
 						    <a href="/book/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}/details" class="btn btn-dark btn-sm">More Details</a>
 						  </div>
 						</div>

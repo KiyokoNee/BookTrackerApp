@@ -16,7 +16,7 @@
 			<button type="submit" class="btn btn-danger btn-lg" >Logout</button>
 		</form:form>
 		<h1 class="col-md-auto offset-1 display-1 fw-bold" >Dashboard</h1>
-		<a class="col col-lg-2 offset-1 btn btn-dark btn-lg my-auto" href="mybooks" >My Books</a>
+		<a class="col col-lg-2 offset-1 btn btn-dark btn-lg my-auto" href="/mybooks" >My Books</a>
 	</div>
 	<img class="border border-secondary border-5 rounded-bottom w-100 shadow-lg" src="${pageContext.request.contextPath}/assets/bookshelf2.jpg" alt="bookshelf"> 
 	<div class="mt-5 mx-auto">
@@ -30,8 +30,8 @@
 		<div class="border border-1 border-secondary bg-secondary bg-gradient bg-opacity-25 shadow">
 			<div class="row row-cols-1 row cols-sm-2 g-3 p-5">
 				<c:forEach var="book" items="${books}">
-					<div class="col w-25 h-100">
-						<div class="card">
+					<div class="col w-25 ">
+						<div class="card h-100">
 						  <div class="card-body">
 						    <h5 class="card-title"><c:out value="${book.editions.docs.get(0).title}" /></h5>
 						    <h6 class="card-subtitle mb-2 text-muted"><c:out value="${book.title}" /></h6>
@@ -39,7 +39,12 @@
 		  					<c:if test="${not empty book.editions.docs.get(0).subtitle }">
 								<p class="text-truncate" >Notes: <c:out value="${book.editions.docs.get(0).subtitle}" /></p>
 							</c:if>
-						    <a href="/book/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}/details" class="btn btn-dark btn-sm">More Details</a>
+						  </div>
+						  <div class="card-footer d-flex justify-content-between">
+						    <a href="/book/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}/details" class="btn btn-dark btn-sm my-auto">More Details</a>
+				    		<form method="POST" action="/borrow/${book.editions.docs.get(0).key.trim().replaceAll('/books/', '')}" class="mt-1">
+								<button type="submit" class="btn btn-sm btn-dark">Borrow</button>
+							</form>
 						  </div>
 						</div>
 					</div>

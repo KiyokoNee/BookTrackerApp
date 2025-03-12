@@ -48,7 +48,6 @@ public class BookTrackerController {
 	@Autowired
 	private HttpSession session;
 
-	// TESTING COMMENTS
 	// Get requests - In Progress
 	
 	@GetMapping()
@@ -78,8 +77,7 @@ public class BookTrackerController {
 			@PathVariable("bookKey") String bookKey,
 			Model view
 			) {
-		
-		
+
 		BookDetailsDTO result = apiServ.findByKey(bookKey);
 		List<String> authors = apiServ.getAuthorNames(result);
 		String img = apiServ.getImageURLByKey(bookKey);
@@ -98,6 +96,7 @@ public class BookTrackerController {
 		if( checkLogin() ) { return "redirect:/login"; }
 		
 		User borrower = userService.findById( (Long) session.getAttribute("loggedInUser") );
+
 		bookService.borrowBookByKey(bookKey, borrower);
 		
 		return "redirect:/mybooks";
@@ -160,18 +159,26 @@ public class BookTrackerController {
 	public String dashboard() {
 		
 		if( checkLogin() ) { return "redirect:/login"; }
-		
 		return "dashboard.jsp";
 	}
 	
 	@GetMapping("/mybooks")
-	public String myBooks() {
-		return "index.jsp";
+	public String myBooks(
+			Model view
+			) {
+		if( checkLogin() ) { return "redirect:/login"; }
+		view.addAttribute("borrowedBooks", bookService.getBooksByBorrowerId( (Long) session.getAttribute("loggedInUser") ));
+		
+		return "mybooks.jsp";
 	}
 	
 	
-	@GetMapping("/book/{key}/edit")
-	public String editBookForm() {
+	@GetMapping("/book/{bookKey}/edit")
+	public String editBookForm(
+			@PathVariable("bookKey") String bookKey
+			) {
+		
+		
 		return "index.jsp";
 	}
 	
