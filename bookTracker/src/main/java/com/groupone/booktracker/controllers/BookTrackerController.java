@@ -77,8 +77,7 @@ public class BookTrackerController {
 			@PathVariable("bookKey") String bookKey,
 			Model view
 			) {
-		
-		
+
 		BookDetailsDTO result = apiServ.findByKey(bookKey);
 		List<String> authors = apiServ.getAuthorNames(result);
 		String img = apiServ.getImageURLByKey(bookKey);
@@ -164,9 +163,13 @@ public class BookTrackerController {
 	}
 	
 	@GetMapping("/mybooks")
-	public String myBooks() {
+	public String myBooks(
+			Model view
+			) {
+		if( checkLogin() ) { return "redirect:/login"; }
+		view.addAttribute("borrowedBooks", bookService.getBooksByBorrowerId( (Long) session.getAttribute("loggedInUser") ));
 		
-		return "index.jsp";
+		return "mybooks.jsp";
 	}
 	
 	
