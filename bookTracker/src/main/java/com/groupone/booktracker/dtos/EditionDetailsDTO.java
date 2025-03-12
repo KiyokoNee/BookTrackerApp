@@ -10,6 +10,13 @@ public class EditionDetailsDTO {
 		
 	}
 
+	public EditionDetailsDTO(String key, String title, String subtitle, String description) {
+		this.key = key;
+		this.title = title;
+		this.subtitle = subtitle;
+		this.description = description;
+	}
+
 	public String getKey() {
 		return key;
 	}

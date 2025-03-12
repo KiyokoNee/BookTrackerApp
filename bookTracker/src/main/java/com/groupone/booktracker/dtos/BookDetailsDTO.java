@@ -15,6 +15,17 @@ public class BookDetailsDTO {
 		
 	}
 
+	public BookDetailsDTO(String title, String subtitle, String key, List<BookDetailsAuthorsDTO> authors,
+			DescriptionDTO description, List<String> subjects, Long number_of_pages) {
+		this.title = title;
+		this.subtitle = subtitle;
+		this.key = key;
+		this.authors = authors;
+		this.description = description;
+		this.subjects = subjects;
+		this.number_of_pages = number_of_pages;
+	}
+
 	public String getTitle() {
 		return title;
 	}
