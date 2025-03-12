@@ -13,6 +13,15 @@ public class SearchBookDocDTO {
 		
 	}
 
+	public SearchBookDocDTO(List<String> authorName, Long firstPublishYear, String key, String title,
+			EditionDTO editions) {
+		this.authorName = authorName;
+		this.firstPublishYear = firstPublishYear;
+		this.key = key;
+		this.title = title;
+		this.editions = editions;
+	}
+
 	public List<String> getAuthorName() {
 		return authorName;
 	}

@@ -9,6 +9,10 @@ public class EditionDTO {
 		
 	}
 
+	public EditionDTO(List<EditionDetailsDTO> docs) {
+		this.docs = docs;
+	}
+
 	public List<EditionDetailsDTO> getDocs() {
 		return docs;
 	}

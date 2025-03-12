@@ -20,7 +20,7 @@ public class BookMapper {
 		newBook.setSubtitle(bookData.getSubtitle());
 		newBook.setDescription(bookData.getDescription() != null ? bookData.getDescription().getValue() : null);
 		newBook.setTotalPages(bookData.getNumber_of_pages());
-		newBook.setBookKey(bookData.getKey());
+		newBook.setBookKey(apiServ.cleanKey(bookData.getKey()));
 		newBook.setBorrower(borrower);
 		newBook.setAuthors(convertStringsToAuthors(apiServ.getAuthorNames(bookData), newBook));
 		newBook.setSubjects(convertStringsToSubjects(bookData.getSubjects(), newBook));
