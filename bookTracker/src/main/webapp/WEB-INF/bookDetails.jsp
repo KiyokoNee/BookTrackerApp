@@ -54,7 +54,7 @@
 				<div class="my-3 mx-5">
 					<p class="h5 ">Description:</p>
 					<c:choose>
-						<c:when test="${not empty book.description.value }">
+						<c:when test="${not empty book.description}">
 							<p class="fs-6 text-muted "><c:out value="${book.description.value}" escapeXml="false" /></p>
 						</c:when>
 						<c:otherwise>

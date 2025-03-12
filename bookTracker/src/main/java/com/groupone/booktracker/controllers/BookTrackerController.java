@@ -173,8 +173,12 @@ public class BookTrackerController {
 	}
 	
 	
-	@GetMapping("/book/{key}/edit")
-	public String editBookForm() {
+	@GetMapping("/book/{bookKey}/edit")
+	public String editBookForm(
+			@PathVariable("bookKey") String bookKey
+			) {
+		
+		
 		return "index.jsp";
 	}
 	
