@@ -11,7 +11,7 @@
 <link rel="icon" href="/assets/stackedBooks.png">
 <title>Books Tracker</title>
 </head>
-<body class="container">
+<body class="container ">
 	<div class="row justify-content-md-center mt-5 py-4 px-5 bg-warning bg-gradient bg-opacity-50 rounded-top shadow-lg">
 		<div class="col col-lg-2" >
 			<p class="fs-5 m-0">Don't have a Login?</p>

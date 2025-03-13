@@ -1,5 +1,6 @@
 package com.groupone.booktracker.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,10 @@ public class BookTrackerController {
 		Book potentialBook = bookService.getBookByKey(bookKey);
 		if( potentialBook != null) {
 			view.addAttribute("potentialBook", potentialBook);
+			
+			if(potentialBook.getReturnBy().isBefore(LocalDate.now())) {
+				view.addAttribute("overdue", true );
+			}
 		}
 		
 		BookDetailsDTO result = apiServ.findByKey(bookKey);
@@ -120,7 +125,9 @@ public class BookTrackerController {
 			Model view
 			) {
 		if( checkLogin() ) { return "redirect:/login"; }
+		
 		view.addAttribute("borrowedBooks", bookService.getBooksByBorrowerId( (Long) session.getAttribute("loggedInUser") ));
+		view.addAttribute("today", LocalDate.now());
 		
 		return "mybooks.jsp";
 	}
@@ -137,7 +144,14 @@ public class BookTrackerController {
 		if( oldBook.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
 			return "redirect:/dashboard";
 		}
+		
+		if(oldBook.getReturnBy().isBefore(LocalDate.now())) {
+			view.addAttribute("overdue", true );
+		}
+		
 		String img = apiServ.getImageURLByKey(bookKey);
+		
+		
 		
 		view.addAttribute("oldBook", oldBook);
 		view.addAttribute("imgURL", img);
@@ -247,7 +261,6 @@ public class BookTrackerController {
 		}
 		
 		bookService.deleteBorrowById(bookToDelete.getId());
-		System.out.println("DELETE FUNCTION SUCESSFUL");
 		return "redirect:/mybooks";
 	}
 	

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
-<html>
+<html></html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
@@ -109,7 +109,12 @@
 	        <form:errors path="returnBy" class="text-danger fw-bold text-opacity-75" />
 			<div class="">
 				<p class="fw-bold m-0">Current Due Date: <span class="text-info  font-monospace"><c:out value="${ oldBook.returnBy}"/> </span></p>
-				<form:label path="returnBy" class="form-label fw-bold" >Extend Due Date: </form:label>
+				<form:label path="returnBy" class="form-label fw-bold" >Extend Due Date: 
+					<c:if test="${overdue}">
+						<span class="badge bg-danger" >OVERDUE</span>
+					</c:if>
+				
+				</form:label>
 				<form:input path="returnBy" type="date" class="form-control" value="${oldBook.returnBy}" />
 			</div>
 	

@@ -115,9 +115,14 @@
 				<c:if test="${potentialBook != null }" >
 					<div class="card w-75 mx-auto">
 					  <div class="card-body">
-					    <p class="card-title h4 mb-3">Currently Borrowing: <span class="text-danger"><c:out value="${potentialBook.borrower.username}" /> </span></p>
+					    <p class="card-title h4 mb-3">Currently Borrowing: <span class="text-secondary fw-bold font-monospace fs-5"><c:out value="${potentialBook.borrower.username}" /> </span></p>
 					    <p class="card-subtitle text-muted h6">Pages Read: <c:out value="${potentialBook.pagesRead}" /> </p>
-					    <p class="card-subtitle mb-2 text-muted h6">Return Due Date: <c:out value="${potentialBook.returnBy}" /> </p>
+					    <p class="card-subtitle mb-2 text-muted h6">Return Due Date: 
+					    	<span class="text-info"><c:out value="${potentialBook.returnBy}" /></span>
+					    	<c:if test="${overdue}">
+					    		<span class="badge bg-danger">OVERDUE</span>
+					    	</c:if>
+					    </p>
 					  </div>
 					</div>
 				</c:if>
