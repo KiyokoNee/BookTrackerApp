@@ -20,6 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "books")
@@ -42,6 +43,7 @@ public class Book {
 	private Long totalPages;
 	private String bookKey;
 	
+	@Min(value = 0, message ="Pages read cannot be less than 0!")
 	private Long pagesRead;
 	private LocalDate returnBy;
 	
