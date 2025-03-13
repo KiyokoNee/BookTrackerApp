@@ -2,6 +2,8 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!-- for rendering errors on PUT routes -->
+<%@ page isErrorPage="true" %>
 
 <!DOCTYPE html>
 <html></html>
@@ -42,9 +44,9 @@
 				<div class="row my-3 mx-5">
 					<p class="h3 col-sm">Author(s):</p>
 					<c:choose>
-						<c:when test="${not empty authors }">
+						<c:when test="${not empty oldBook.authors }">
 							<p class="h4 col-8 text-muted">
-								<c:forEach var = "author" items="${authors}">
+								<c:forEach var = "author" items="${oldBook.authors}">
 									<c:out value="${author.name} " />
 								</c:forEach>
 							</p>
@@ -94,19 +96,18 @@
 			</div>
 		</div>
 		<hr>
-		<form:form class="d-flex justify-content-between mt-5 px-5 align-items-end" action="/book/${bookKey}/edit" method="post" modelAttribute="oldBook">
+		<form:form class="d-flex justify-content-between mt-5 px-5 align-items-end" action="/book/${bookKey}/edit" method="post" modelAttribute="newBook">
 			<input type="hidden" name="_method" value="put" >
 	
-	        <form:errors path="pagesRead" class="text-danger fw-bold text-opacity-75" />
-	        <div class="">
+	        <div class="d-flex flex-column">
 	        	<form:label path="pagesRead" class="form-label p-0 fw-bold">Pages Read:</form:label >
 				<div class="input-group p-0">
 				  <span class="input-group-text"></span>
 				  <form:input path="pagesRead" type="number" class="form-control" aria-label="pagesRead" />
 				</div>
+	        	<form:errors path="pagesRead" class="text-danger fw-bold text-opacity-75" />
 	        </div>
 	
-	        <form:errors path="returnBy" class="text-danger fw-bold text-opacity-75" />
 			<div class="">
 				<p class="fw-bold m-0">Current Due Date: <span class="text-info  font-monospace"><c:out value="${ oldBook.returnBy}"/> </span></p>
 				<form:label path="returnBy" class="form-label fw-bold" >Extend Due Date: 
@@ -115,7 +116,8 @@
 					</c:if>
 				
 				</form:label>
-				<form:input path="returnBy" type="date" class="form-control" value="${oldBook.returnBy}" />
+				<form:input path="returnBy" type="date" class="form-control" value="${newBook.returnBy}" />
+	        <form:errors path="returnBy" class="text-danger fw-bold text-opacity-75" />
 			</div>
 	
 		    <button type="submit" class="btn btn-warning btn-lg" >Update</button>
