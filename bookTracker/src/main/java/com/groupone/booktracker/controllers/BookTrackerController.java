@@ -20,6 +20,7 @@ import com.groupone.booktracker.dtos.BookDetailsDTO;
 import com.groupone.booktracker.dtos.SearchBookDocDTO;
 import com.groupone.booktracker.models.Book;
 import com.groupone.booktracker.models.LoginUser;
+import com.groupone.booktracker.models.UpdateBook;
 import com.groupone.booktracker.models.User;
 import com.groupone.booktracker.services.APIService;
 import com.groupone.booktracker.services.BookService;
@@ -150,12 +151,11 @@ public class BookTrackerController {
 		}
 		
 		String img = apiServ.getImageURLByKey(bookKey);
-		
-		
+		UpdateBook newBook = new UpdateBook(oldBook.getPagesRead(), oldBook.getReturnBy());
 		
 		view.addAttribute("oldBook", oldBook);
+		view.addAttribute("newBook", newBook);
 		view.addAttribute("imgURL", img);
-		view.addAttribute("authors", oldBook.getAuthors());
 		
 		return "editBook.jsp";
 	}
@@ -219,27 +219,38 @@ public class BookTrackerController {
 	@PutMapping("/book/{bookKey}/edit")
 	public String editBorrow(
 			@PathVariable String bookKey,
-			@Valid @ModelAttribute("oldBook") Book oldBook,
+			@Valid @ModelAttribute("newBook") Book newBook,
 			BindingResult result,
 			Model view 
 			) {
 		
 		if( checkLogin() ) { return "redirect:/login"; }
 		
-		Book newBook = bookService.getBookByKey(bookKey);
-		if( newBook.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
+		Book oldBook = bookService.getBookByKey(bookKey);
+		if( oldBook.getBorrower().getId() != (long) session.getAttribute("loggedInUser")  ) {
 			return "redirect:/dashboard";
 		}
 		
+		if(newBook.getReturnBy().isBefore(newBook.getReturnBy())) {
+			result.rejectValue("returnBy", "error.returnBy", "The new return date cannot be set before the current return date!");
+		}
+		
+		if(newBook.getTotalPages() != null && newBook.getPagesRead() > newBook.getTotalPages()) {
+			result.rejectValue("pagesRead", "error.pagesRead", "Pages read cannot exceed the pages available to read!");
+		}
+		
 		if(result.hasErrors()) {
+			
 			view.addAttribute("oldBook", oldBook);
+			view.addAttribute("newBook", newBook);
+			view.addAttribute("imgURL", apiServ.getImageURLByKey(bookKey));
 			return "editBook.jsp";
 		}
 		
-		newBook.setPagesRead(oldBook.getPagesRead());
-		newBook.setReturnBy(oldBook.getReturnBy());
+		oldBook.setPagesRead(newBook.getPagesRead());
+		oldBook.setReturnBy(newBook.getReturnBy());
 		
-		bookService.updateBorrow(newBook);
+		bookService.updateBorrow(oldBook);
 		
 		
 		return "redirect:/mybooks";
