@@ -231,11 +231,11 @@ public class BookTrackerController {
 			return "redirect:/dashboard";
 		}
 		
-		if(newBook.getReturnBy().isBefore(newBook.getReturnBy())) {
+		if(newBook.getReturnBy().isBefore(oldBook.getReturnBy())) {
 			result.rejectValue("returnBy", "error.returnBy", "The new return date cannot be set before the current return date!");
 		}
 		
-		if(newBook.getTotalPages() != null && newBook.getPagesRead() > newBook.getTotalPages()) {
+		if(oldBook.getTotalPages() != null && newBook.getPagesRead() > oldBook.getTotalPages()) {
 			result.rejectValue("pagesRead", "error.pagesRead", "Pages read cannot exceed the pages available to read!");
 		}
 		
